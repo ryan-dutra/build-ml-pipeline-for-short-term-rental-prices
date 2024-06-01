@@ -89,6 +89,12 @@ def go(args):
 
     logger.info("Exporting model")
 
+    # Ensure all columns in X_val have consistent data types
+    X_val = X_val.apply(lambda col: col.astype(str) if col.dtype == 'object' else col)
+
+    # Log the data types of columns to debug any issues
+    logger.info(f"Data types of X_val: {X_val.dtypes}")
+    
     # Save model package in the MLFlow sklearn format
     if os.path.exists("random_forest_dir"):
         shutil.rmtree("random_forest_dir")
